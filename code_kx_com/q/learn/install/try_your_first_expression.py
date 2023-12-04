@@ -1,5 +1,5 @@
-from lib.array_utils import q_range
-from lib.mem_utils import q_exit_cli
+from lib0.array_utils import q_range
+from lib0.mem_utils import q_exit_cli
 
 
 def all_tests():

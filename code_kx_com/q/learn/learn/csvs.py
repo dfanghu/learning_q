@@ -1,5 +1,5 @@
-from lib.array_utils import *
-from lib.file_utils import *
+from lib0.array_utils import *
+from lib0.file_utils import *
 
 
 def all_tests():

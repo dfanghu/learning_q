@@ -1,10 +1,10 @@
-from lib.array_utils import *
-from lib.file_utils import *
-from lib.lang_utils import q_assign, q_guessExpr
-from lib.mem_utils import *
-from lib.trig_utils import *
-from lib.web_utils import q_download_csv
-from lib.sql_utils import *
+from lib0.array_utils import *
+from lib0.file_utils import *
+from lib0.lang_utils import q_assign, q_guessExpr
+from lib0.mem_utils import *
+from lib0.trig_utils import *
+from lib0.web_utils import q_download_csv
+from lib0.sql_utils import *
 
 
 def all_tests():
