@@ -1,4 +1,4 @@
-from lib0.array_utils import q_concat
+from lib0.list_utils import q_concat
 from lib0.file_utils import q_load_csv
 from lib0.mem_utils import q_os
 

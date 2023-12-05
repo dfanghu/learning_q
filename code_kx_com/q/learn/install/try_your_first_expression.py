@@ -1,4 +1,4 @@
-from lib0.array_utils import q_range
+from lib0.list_utils import q_range
 from lib0.mem_utils import q_exit_cli
 
 

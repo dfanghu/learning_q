@@ -9,7 +9,7 @@ def q_list_tables() -> str:
     return q_cmd("a", [])
 
 
-def q_date() -> str:
+def q_today() -> str:
     return q_cmd("date", [])
 
 
