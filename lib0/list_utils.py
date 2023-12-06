@@ -5,8 +5,12 @@ def q_range(n: int) -> str:
     return q_f('til', [n])
 
 
-def q_concat(expr1, expr2) -> str:
-    return expr1 + "," + expr2
+def q_concat2(x, y) -> str:
+    return f"{x},{y}"
+
+
+def q_concat(x: list) -> str:
+    return ",".join([str(el) for el in x])
 
 
 def q_count(expr) -> str:
@@ -25,40 +29,46 @@ def q_flip(x: str) -> str:
     return q_f("flip", [x])
 
 
-def q_logial_test(lhs, op: str, rhs) -> str:
-    return f"{lhs} {op} {rhs}"
+def q_binop(lhs, op: str, rhs, space: bool) -> str:
+    sep = " " if space else ""
+    return f"{lhs}{sep}{op}{sep}{rhs}"
 
 
-def q_logical_test_gt(lhs, rhs) -> str:
-    return q_logial_test(lhs, ">", rhs)
+def q_logical_test_gt(lhs, rhs, space: bool = False) -> str:
+    return q_binop(lhs, ">", rhs, space=space)
 
 
-def q_logical_test_eq(lhs, rhs) -> str:
-    return q_logial_test(lhs, "=", rhs)
+def q_logical_test_ge(lhs, rhs, space: bool = False) -> str:
+    return q_binop(lhs, ">=", rhs, space=space)
 
 
-def q_logical_test_lt(lhs, rhs) -> str:
-    return q_logial_test(lhs, "<", rhs)
+def q_logical_test_eq(lhs, rhs, space: bool = False) -> str:
+    return q_binop(lhs, "=", rhs, space=space)
 
 
-def q_binop(x, op, y) -> str:
-    operands = []
-    for z in [x, y]:
-        operands.append(str(z))
-    return op.join(operands)
+def q_logical_test_neq(lhs, rhs, space: bool = False) -> str:
+    return q_binop(lhs, "<>", rhs, space=space)
 
 
-def q_add(x, y) -> str:
-    return q_binop(x, "+", y)
+def q_logical_test_lt(lhs, rhs, space: bool = False) -> str:
+    return q_binop(lhs, "<", rhs, space=space)
 
 
-def q_subtract(x, y) -> str:
-    return q_binop(x, "-", y)
+def q_logical_test_le(lhs, rhs, space: bool = False) -> str:
+    return q_binop(lhs, "<=", rhs, space=space)
 
 
-def q_mul(x, y) -> str:
-    return q_binop(x, "*", y)
+def q_add(x, y, space: bool = False) -> str:
+    return q_binop(x, "+", y, space=space)
 
 
-def q_div(x, y) -> str:
-    return q_binop(x, "%", y)
+def q_subtract(x, y, space: bool = False) -> str:
+    return q_binop(x, "-", y, space=space)
+
+
+def q_mul(x, y, space: bool = False) -> str:
+    return q_binop(x, "*", y, space=space)
+
+
+def q_div(x, y, space: bool = False) -> str:
+    return q_binop(x, "%", y, space=space)

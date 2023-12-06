@@ -1,10 +1,9 @@
-from lib0.QIterable import QIterable
-from lib0.list_utils import q_count
+from lib0.QVec import QIndexable
 
 
-class QList:
+class QList(QIndexable):
     def __init__(self, x: list, enclose_parentheses: bool = False):
-        self.x = x
+        super().__init__(x)
         self.enclose_parentheses = enclose_parentheses
 
     def __str__(self) -> str:
@@ -12,13 +11,3 @@ class QList:
         if self.enclose_parentheses:
             return "(" + res + ")"
         return res
-
-    @staticmethod
-    def parse(s):
-        raise "Not Implemented"
-
-    def count(self) -> str:
-        return q_count(str(self))
-
-    def foreach(self) -> QIterable:
-        return QIterable(str(self))

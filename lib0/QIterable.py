@@ -1,8 +1,20 @@
 from lib0.list_utils import q_count
 
 
-class QIterable:
+class QCountable:
     def __init__(self, x):
+        self.x = x
+
+    def __str__(self) -> str:
+        return str(self.x)
+
+    def count(self) -> str:
+        return q_count(str(self))
+
+
+class QIterable(QCountable):
+    def __init__(self, x):
+        super().__init__(x)
         self.x = x
 
     def __str__(self) -> str:
@@ -12,5 +24,5 @@ class QIterable:
     def parse(s):
         raise "Not Implemented"
 
-    def count(self) -> str:
-        return q_count(str(self))
+    def foreach(self):
+        return QIterable(str(self))

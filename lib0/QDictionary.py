@@ -1,25 +1,27 @@
-from lib0.QIterable import QIterable
-from lib0.QVector import QVector
-from lib0.lang_utils import q_assign
-from lib0.list_utils import q_flip, q_count
+from lib0.QList import QList
+from lib0.QSym import QSym
+from lib0.QVec import QVec, QIndexable
+from lib0.list_utils import q_flip
 
 
-class QTable:
-    def __init__(self, x: dict):
+class QDictionary(QIndexable):
+    def __init__(self, x: dict, enclose_parentheses: bool = False):
+        super().__init__(x)
         self.x = x
+        self.enclose_parentheses = enclose_parentheses
 
     def __str__(self) -> str:
-        return "([]" + ";".join([q_assign(k, QVector(v)) for k, v in self.x.items()]) + ")"
+        res = "".join([str(QSym(k)) for k in self.x.keys()]) + "!" + str(
+            QList([QVec(v) for v in self.x.values()], enclose_parentheses=True))
+        if self.enclose_parentheses:
+            return "(" + res + ")"
+        return res
 
-    @staticmethod
-    def parse(s):
-        raise "Not Implemented"
+    def single_row_vector(self) -> str:
+        res = "".join([str(QSym(k)) for k in self.x.keys()]) + "!" + str(QVec(list(self.x.values())))
+        if self.enclose_parentheses:
+            return "(" + res + ")"
+        return res
 
     def flip(self) -> str:
         return q_flip(str(self))
-
-    def count(self) -> str:
-        return q_count(str(self))
-
-    def foreach(self) -> QIterable:
-        return QIterable(str(self))

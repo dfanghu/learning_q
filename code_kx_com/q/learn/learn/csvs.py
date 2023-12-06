@@ -1,6 +1,6 @@
 from lib0.list_utils import *
 from lib0.file_utils import *
-from lib0.QString import QString
+from lib0.QStr import QStr
 
 
 def all_tests():
@@ -28,6 +28,6 @@ def test3():
 
 
 def test4():
-    res = q_save_text(q_filesymbol("test.txt"), q_enlist(QString("text to save")))
+    res = q_save_text(q_filesymbol("test.txt"), q_enlist(QStr("text to save")))
     print(res)
     assert '''`:test.txt 0: enlist "text to save"''' == res
