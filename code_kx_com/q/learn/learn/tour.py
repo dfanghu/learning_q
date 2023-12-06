@@ -1,4 +1,5 @@
 from lib0.QDate import QDate
+from lib0.QDictionary import QTable
 from lib0.QIterable import QIterable
 from lib0.QList import QList
 from lib0.QVector import QVector
@@ -96,9 +97,9 @@ def test8():
     print(res2)
     assert '''count 2019.07.05 2019.09.15 2019.11.16''' == res2
 
-    res3 = q_count(QVector([QMinute(time(hour=8, minute=30)),
-                            QMinute(time(hour=12, minute=45)),
-                            QMinute(time(hour=17, minute=15)), ]))
+    res3 = QVector([QMinute(time(hour=8, minute=30)),
+                    QMinute(time(hour=12, minute=45)),
+                    QMinute(time(hour=17, minute=15)), ]).count()
     print(res3)
     assert '''count 08:30 12:45 17:15''' == res3
 
@@ -130,7 +131,7 @@ def test8():
 
 
 def test9():
-    res = QList([42, QString("foxes"), "`screw`bolt", "2020.09.15"], enclose_parentheses=True).count()
+    res = QList([42, QString("foxes"), QVector([QSymbol("screw"), QSymbol("bolt")]), QDate(datetime(2020, 9, 15))],enclose_parentheses=True).count()
     print(res)
     assert '''count (42;"foxes";`screw`bolt;2020.09.15)''' == res
 
