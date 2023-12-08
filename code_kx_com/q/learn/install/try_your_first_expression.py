@@ -1,5 +1,5 @@
-from lib0.list_utils import q_range
-from lib0.mem_utils import q_exit_cli
+from lib_q.mem_utils import q_exit_cli
+from api.etc import range
 
 
 def all_tests():
@@ -8,7 +8,8 @@ def all_tests():
 
 
 def test1():
-    assert r"til 6" == q_range(6)
+    print(range(6))
+    assert r"til 6" == str(range(6))
 
 
 def test2():

@@ -1,6 +1,6 @@
-from lib0.list_utils import *
-from lib0.file_utils import *
-from lib0.QStr import QStr
+from lib_q.list_utils import *
+from lib_q.file_utils import *
+from lib_q.QStr import QStr
 
 
 def all_tests():

@@ -1,8 +1,9 @@
-from lib0.QPredicate import QPredicate
-from lib0.list_utils import *
+from lib_q.QExpression import QExpression
+from lib_q.QPredicate import QPredicate
+from lib_q.list_utils import *
 
 
-class QComparable:
+class QOperable(QExpression):
 
     def __init__(self, x, space: bool = False):
         self.x = x

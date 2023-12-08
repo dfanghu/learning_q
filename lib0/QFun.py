@@ -30,9 +30,15 @@ class QFun:
     def map(self, iterable):
         return f"{self} each {iterable}"
 
-    def accum(self, initial, rest, intermediate_steps=False):
+    def fold(self, initial, rest, intermediate_steps=False):
         op = "\\" if intermediate_steps else "/"
         return f"{initial} {self}{op} {rest}"
+
+    def scan(self, initial, rest):
+        return self.fold(initial=initial, rest=rest, intermediate_steps=True)
+
+    def over(self, initial, rest):
+        return self.fold(initial=initial, rest=rest, intermediate_steps=False)
 
     def do_n_times(self, n, initial, intermediate_steps=False):
         op = "\\" if intermediate_steps else "/"

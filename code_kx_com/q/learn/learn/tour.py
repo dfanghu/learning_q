@@ -1,20 +1,20 @@
-from lib0.QComparable import QComparable
-from lib0.QDate import QDate
-from lib0.QDictionary import QDictionary
-from lib0.QFun import QFun
-from lib0.QList import QList
-from lib0.QVec import QVec, QIndexable
-from lib0.list_utils import *
-from lib0.file_utils import *
-from lib0.lang_utils import q_assign
-from lib0.mem_utils import *
-from lib0.QMinute import QMinute
-from lib0.QStr import QStr
-from lib0.QSym import QSym
-from lib0.QTime import QTime
-from lib0.trig_utils import *
-from lib0.web_utils import q_download_csv
-from lib0.sql_utils import *
+from lib_q.QOperable import QOperable
+from lib_q.QDate import QDate
+from lib_q.QDictionary import QDictionary
+from lib_q.QFun import QFun
+from lib_q.QList import QList
+from lib_q.QVec import QVec, QIndexable
+from lib_q.list_utils import *
+from lib_q.file_utils import *
+from lib_q.lang_utils import q_assign
+from lib_q.mem_utils import *
+from lib_q.QMinute import QMinute
+from lib_q.QStr import QStr
+from lib_q.QSym import QSym
+from lib_q.QTime import QTime
+from lib_q.trig_utils import *
+from lib_q.web_utils import q_download_csv
+from lib_q.sql_utils import *
 from datetime import datetime, time
 
 
@@ -66,9 +66,7 @@ def test5():
 
 def test6():
     url_expr = QStr("https://code.kx.com/download/data/example.csv")
-    res = q_assign("url", url_expr)
-    print(res)
-    assert res == f'''url:"https://code.kx.com/download/data/example.csv"'''
+    q_assign("url", url_expr).test('''url:"https://code.kx.com/download/data/example.csv"''')
 
     res2 = q_download_csv("url", coltypes="SFI", sep=",", header=True)
     print(res2)
@@ -121,13 +119,13 @@ def test8():
     print(res5)
     assert '''count "fox"''' == res5
 
-    res6 = q_count(QList([QStr("quick"), QStr("brown"), QStr("fox")], enclose_parentheses=True))
+    res6 = q_count(QList([QStr("quick"), QStr("brown"), QStr("fox")], parentheses=True))
     print(res6)
     assert '''count ("quick";"brown";"fox")''' == res6
 
-    res7 = QList([QStr("quick"), QStr("brown"), QStr("fox")], enclose_parentheses=True).foreach().count()
+    res7 = QList([QStr("quick"), QStr("brown"), QStr("fox")], parentheses=True).foreach().count()
     print(res7)
-    assert '''count each ("quick";"brown";"fox")''' == res7
+    assert '''count each("quick";"brown";"fox")''' == res7
 
     res8 = QVec([QSym("quick"), QSym("brown"), QSym("fox")]).count()
     print(res8)
@@ -140,7 +138,7 @@ def test8():
 
 def test9():
     res = QList([42, QStr("foxes"), QVec([QSym("screw"), QSym("bolt")]), QDate(datetime(2020, 9, 15))],
-                enclose_parentheses=True).count()
+                parentheses=True).count()
     print(res)
     assert '''count (42;"foxes";`screw`bolt;2020.09.15)''' == res
 
@@ -172,29 +170,29 @@ def test10():
 
 
 def test11():
-    res = QStr("abcdef").indexing([3, 4, 0, 5])
+    res = QStr("abcdef").indexing(QVec([3, 4, 0, 5]))
     print(res)
-    assert '''"abcdef"[3 4 0 5]''' == QStr("abcdef").indexing([3, 4, 0, 5])
+    assert '''"abcdef"[3 4 0 5]''' == QStr("abcdef").indexing(QVec([3, 4, 0, 5]))
 
 
 def test12():
-    res = QIndexable("sp").indexing([0, 2], enclose_brackets=False)
+    res = QIndexable("sp").indexing(QVec([0, 2]), brackets=False)
     print(res)
-    assert '''sp 0 2''' == QIndexable("sp").indexing([0, 2], enclose_brackets=False)
+    assert '''sp 0 2''' == QIndexable("sp").indexing(QVec([0, 2]), brackets=False)
 
-    res = QIndexable("sp").indexing([QSym("s"), QSym("p")], enclose_brackets=False)
+    res = QIndexable("sp").indexing(QVec([QSym("s"), QSym("p")]), brackets=False)
     print(res)
     assert '''sp `s`p''' == res
 
-    res = QIndexable("sp").indexing([QSym("qty")], enclose_brackets=True)
+    res = QIndexable("sp").indexing(QVec([QSym("qty")]), brackets=True)
     print(res)
     assert '''sp[`qty]''' == res
 
-    res = QComparable(QIndexable("sp").indexing([QSym("qty")], enclose_brackets=True)).gt(200)
+    res = QOperable(QIndexable("sp").indexing(QVec([QSym("qty")]), brackets=True)).gt(200)
     print(res)
     assert '''sp[`qty]>200''' == str(res)
 
-    res = QIndexable("sp").where(QComparable(QIndexable("sp").indexing([QSym("qty")], enclose_brackets=True)).gt(200))
+    res = QIndexable("sp").where(QOperable(QIndexable("sp").indexing(QVec([QSym("qty")]), brackets=True)).gt(200))
     print(res)
     assert '''sp where sp[`qty]>200''' == str(res)
 
@@ -204,15 +202,14 @@ def test13():
     print(res)
     assert '''`item`qty`price!(`screw;500;1.95)''' == str(res)
 
-    res = q_assign("pr", QDictionary({"screw": 0.75, "nail": 3, "bolt": 2.85, "nut": 0.55}).single_row_vector())
-    print(res)
-    assert '''pr:`screw`nail`bolt`nut!0.75 3 2.85 0.55''' == res
+    q_assign("pr", QDictionary({"screw": 0.75, "nail": 3, "bolt": 2.85, "nut": 0.55}).single_row_vector()).test(
+        '''pr:`screw`nail`bolt`nut!0.75 3 2.85 0.55''')
 
-    res = QIndexable("pr").indexing([QSym("bolt"), QSym("nail")], enclose_brackets=False)
+    res = QIndexable("pr").indexing(QVec([QSym("bolt"), QSym("nail")]), brackets=False)
     print(res)
     assert '''pr `bolt`nail''' == res
 
-    res = QComparable("pr").gt(2)
+    res = QOperable("pr").gt(2)
     print(res)
     assert '''pr>2''' == str(res)
 
@@ -224,47 +221,42 @@ def test14():
 
 
 def test15():
-    res = QFun("x*x").call(QVec([2, -1.5, 17]))
-    print(res)
-    assert '''{x*x}2 -1.5 17''' == res
+    QFun("x*x").call(QVec([2, -1.5, 17])).test('''{x*x} 2 -1.5 17''')
 
-    res = QFun(q_concat(
+    QFun(q_concat(
         [QStr("<"), "e", QStr(" "), "a", QStr(r"=\""), "v", QStr(r"\">"), "c", QStr("</"), "e",
-         QStr(">")]), argv=["e", "a", "v", "c"]).assign_to_name("el")
-    print(res)
-    assert r'''el:{[e;a;v;c]"<",e," ",a,"=\"",v,"\">",c,"</",e,">"}''' == res
+         QStr(">")]), params=["e", "a", "v", "c"]).assign_to_name("el").test(
+        r'''el:{[e;a;v;c]"<",e," ",a,"=\"",v,"\">",c,"</",e,">"}''')
 
-    res = QFun(name="el", body="").call(
-        QList([QStr("a"), QStr("href"), QStr("https://example.com/"), QStr("link text")]), enclose_brackets=True)
-    print(res)
-    assert r'''el["a";"href";"https://example.com/";"link text"]''' == str(res)
+    QFun(name="el", body="").call(
+        QList([QStr("a"), QStr("href"), QStr("https://example.com/"), QStr("link text")]), brackets=True).test(
+        r'''el["a";"href";"https://example.com/";"link text"]''')
 
 
 def test16():
-    res = QComparable(QVec([2, 3, 4]), space=True).add(10)
+    res = QOperable(QVec([2, 3, 4]), space=True).add(10)
     print(res)
     assert '''2 3 4 + 10''' == str(res)
 
-    res = QComparable(QVec([2, 3, 4]), space=True).add(QVec([10, 100, 1000]))
+    res = QOperable(QVec([2, 3, 4]), space=True).add(QVec([10, 100, 1000]))
     print(res)
     assert '''2 3 4 + 10 100 1000''' == str(res)
 
 
 def test17():
-    res = QFun(name="count", body="").map(QList([QStr("quick"), QStr("brown"), QStr("fox")], enclose_parentheses=True))
-    print(res)
-    assert '''count each ("quick";"brown";"fox")''' == str(res)
+    QFun.named("count").foreach(QList([QStr("quick"), QStr("brown"), QStr("fox")], parentheses=True)).test(
+        '''count each("quick";"brown";"fox")''')
 
-    res = QFun(name=".h.htc", body="").call(QList([QSym("p"), QStr("The quick brown fox")]), enclose_brackets=True)
+    res = QFun.named(".h.htc").call(QList([QSym("p"), QStr("The quick brown fox")]), brackets=True)
     print(res)
-    assert '''.h.htc[`p;"The quick brown fox"]''' == res
+    assert '''.h.htc[`p;"The quick brown fox"]''' == str(res)
 
-    res = QFun(body=".h.htc[y;x]").accum(QStr("The quick brown fox"), QVec([QSym("p"), QSym("body"), QSym("html")]),
-                                         intermediate_steps=False)
+    res = QFun(".h.htc[y;x]").fold(initial=QStr("The quick brown fox"),
+                                   rest=QVec([QSym("p"), QSym("body"), QSym("html")]), intermediate_steps=False)
     print(res)
     assert '''"The quick brown fox" {.h.htc[y;x]}/ `p`body`html''' == str(res)
 
-    accumulator = QFun(name="sum", body="").call(QIndexable('x').tail(2))
-    res = QFun(body=f"x,{accumulator}").do_n_times(8, QVec([1, 1]), intermediate_steps=True)
+    accumulator = QFun.named("sum").call(QIndexable('x').tail(2))
+    res = QFun(f"x,{accumulator}").do_n_times(8, QVec([1, 1]), intermediate_steps=True)
     print(res)
     assert r'''8 {x,sum -2#x}\1 1''' == str(res)
